@@ -1,0 +1,114 @@
+{
+  "extends" : "thirdParty.api",
+  "abstract" : false,
+  "root" : "https://subway-time.appspot.com/_ah/api",
+  "name" : "schedule",
+  "version" : "v1",
+  "defaultVersion" : false,
+  "adapter" : {
+    "bns" : "https://subway-time.appspot.com/_ah/spi",
+    "deadline" : 10.0,
+    "type" : "lily"
+  },
+  "auth" : {
+    "allowCookieAuth" : false
+  },
+  "frontendLimits" : {
+    "unregisteredUserQps" : -1,
+    "unregisteredQps" : -1,
+    "unregisteredDaily" : -1,
+    "rules" : [ ]
+  },
+  "cacheControl" : {
+    "type" : "no-cache",
+    "maxAge" : 0
+  },
+  "methods" : {
+    "schedule.hw" : {
+      "path" : "hw",
+      "httpMethod" : "GET",
+      "scopes" : [ ],
+      "audiences" : [ ],
+      "clientIds" : [ ],
+      "rosyMethod" : "me.shreyas.subwaytime.service.Schedule.helloWorld",
+      "request" : {
+        "body" : "empty"
+      },
+      "response" : {
+        "body" : "autoTemplate(backendResponse)"
+      }
+    }
+  },
+  "descriptor" : {
+    "schemas" : {
+      "Feed" : {
+        "id" : "Feed",
+        "type" : "object",
+        "properties" : {
+          "tripList" : {
+            "$ref" : "TripList"
+          }
+        }
+      },
+      "TripList" : {
+        "id" : "TripList",
+        "type" : "object",
+        "properties" : {
+          "line" : {
+            "type" : "string"
+          },
+          "currentTime" : {
+            "type" : "string",
+            "format" : "int64"
+          },
+          "trips" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "Trip"
+            }
+          }
+        }
+      },
+      "Trip" : {
+        "id" : "Trip",
+        "type" : "object",
+        "properties" : {
+          "destination" : {
+            "type" : "string"
+          },
+          "tripID" : {
+            "type" : "string"
+          },
+          "predictions" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "Prediction"
+            }
+          }
+        }
+      },
+      "Prediction" : {
+        "id" : "Prediction",
+        "type" : "object",
+        "properties" : {
+          "seconds" : {
+            "type" : "integer"
+          },
+          "stop" : {
+            "type" : "string"
+          },
+          "stopID" : {
+            "type" : "string"
+          }
+        }
+      }
+    },
+    "methods" : {
+      "me.shreyas.subwaytime.service.Schedule.helloWorld" : {
+        "response" : {
+          "$ref" : "Feed"
+        }
+      }
+    }
+  }
+}
